@@ -6,15 +6,22 @@ import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
-import "./app.css";
+import "./app.scss";
+import "./assets/main.css";
+import snipchatPng from "./assets/Logo@3x.png";
+import { Colors, Classes } from "@blueprintjs/core";
 
 import { Navigation } from "./Navigation";
 import { CoreExample } from "./CoreExample";
 import { SelectExample } from "./SelectExample";
 import { DatetimeExample } from "./DatetimeExample";
 
+const divStyles = {};
+const logoStyles = { width: "50px" };
+
 const App = () => (
-  <div>
+  <div style={divStyles}>
+    <Navigation />
     <SelectExample />
   </div>
 );

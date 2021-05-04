@@ -3,20 +3,24 @@ import {
   Alignment,
   AnchorButton,
   Classes,
+  Colors,
   Navbar,
   NavbarGroup,
   NavbarHeading,
   NavbarDivider
 } from "@blueprintjs/core";
+import snipchatPng from "./assets/Logo@3x.png";
+
+const navbarStyles = {};
 
 export interface NavigationProps {}
 
 export class Navigation extends React.PureComponent<NavigationProps> {
   public render() {
     return (
-      <Navbar className={Classes.DARK}>
+      <Navbar style={navbarStyles}>
         <NavbarGroup align={Alignment.LEFT}>
-          <NavbarHeading>Blueprint Sandbox</NavbarHeading>
+          <NavbarHeading>Snipchat Alt</NavbarHeading>
           <NavbarDivider />
           <AnchorButton
             href="http://blueprintjs.com/docs"
@@ -33,6 +37,7 @@ export class Navigation extends React.PureComponent<NavigationProps> {
             rightIcon="code"
           />
         </NavbarGroup>
+        <NavbarGroup align={Alignment.RIGHT}></NavbarGroup>
       </Navbar>
     );
   }
