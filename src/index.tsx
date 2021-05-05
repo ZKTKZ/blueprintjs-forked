@@ -13,7 +13,7 @@ import { Colors, Classes } from "@blueprintjs/core";
 
 import { Navigation } from "./Navigation";
 import { CoreExample } from "./CoreExample";
-import { SelectExample } from "./SelectExample";
+import { SuggestExample } from "./SuggestExample";
 import { DatetimeExample } from "./DatetimeExample";
 
 const divStyles = {};
@@ -22,7 +22,7 @@ const logoStyles = { width: "50px" };
 const App = () => (
   <div style={divStyles}>
     <Navigation />
-    <SelectExample />
+    <SuggestExample />
   </div>
 );
 

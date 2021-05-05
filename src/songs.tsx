@@ -9,39 +9,39 @@ import { ItemPredicate, ItemRenderer } from "@blueprintjs/select";
 import * as React from "react";
 
 export interface ISong {
-  /** Title of film. */
+  /** Title of song. */
   title: string;
   /** Artist name. */
   artist: string;
 }
 
-export const TOP_100_FILMS: ISong[] = [
+export const TOP_100_SONGS: ISong[] = [
   { title: "Wait For It", artist: "Lin Manuel Miranda" }
 ].map((m, index) => ({ ...m }));
 
-export const renderFilm: ItemRenderer<ISong> = (
-  film,
+export const renderSong: ItemRenderer<ISong> = (
+  song,
   { handleClick, modifiers, query }
 ) => {
   if (!modifiers.matchesPredicate) {
     return null;
   }
-  const text = `${film.title}`;
+  const text = `${song.title}`;
   return (
     <MenuItem
       active={modifiers.active}
       disabled={modifiers.disabled}
-      label={film.artist.toString()}
-      key={film.title}
+      label={song.artist.toString()}
+      key={song.title}
       onClick={handleClick}
       text={highlightText(text, query)}
     />
   );
 };
 
-export const filterFilm: ItemPredicate<ISong> = (query, film) => {
+export const filterSong: ItemPredicate<ISong> = (query, song) => {
   return (
-    `${film.title.toLowerCase()} ${film.artist}`.indexOf(
+    `${song.title.toLowerCase()} ${song.artist}`.indexOf(
       query.toLowerCase()
     ) >= 0
   );
@@ -82,8 +82,8 @@ function escapeRegExpChars(text: string) {
   return text.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 }
 
-export const filmSelectProps = {
+export const songSuggestProps = {
   itemPredicate: null,
-  itemRenderer: renderFilm,
-  items: TOP_100_FILMS
+  itemRenderer: renderSong,
+  items: TOP_100_SONGS
 };

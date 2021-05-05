@@ -20,12 +20,14 @@ const iconStyles = {
   marginRight: "1%"
 };
 
-export interface ExampleProps {
+export interface CardExampleProps {
   header: string;
   icon: string;
 }
 
-export class Example extends React.PureComponent<ExampleProps> {
+export class CardExample extends React.PureComponent<
+  CardExampleProps
+> {
   public render() {
     return (
       <Card

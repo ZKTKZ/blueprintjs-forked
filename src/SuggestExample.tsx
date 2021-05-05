@@ -1,89 +1,72 @@
 import * as React from "react";
 import { debounce } from "lodash";
-import {
-  Classes,
-  Intent,
-  Button,
-  Spinner,
-  Card
-} from "@blueprintjs/core";
 import { Suggest } from "@blueprintjs/select";
 
-import { IconNames } from "@blueprintjs/icons";
 import "./app.scss";
 
-import { Example } from "./Example";
-import * as Songs from "./films";
+import { CardExample } from "./CardExample";
+import { Player } from "./Player";
+import * as Songs from "./songs";
 
 require("dotenv").config();
 let Spotify = require("spotify-web-api-js");
 let spotify = new Spotify();
 
-const filmSelectStyles = {
+const songSuggestStyles = {
   display: "flex",
   justifyContent: "center",
   marginBottom: "5%"
 };
 
-const FilmSelect = Suggest.ofType<Songs.ISong>();
+const SongSuggest = Suggest.ofType<Songs.ISong>();
 
-interface SelectExampleState {
-  film: Songs.ISong;
-  films: Songs.ISong[];
-  minimal: boolean;
+interface ISuggestExample {
+  song: Songs.ISong;
+  songs: Songs.ISong[];
 }
 
-export class SelectExample extends React.PureComponent<
+export class SuggestExample extends React.PureComponent<
   {},
-  SelectExampleState
+  ISuggestExample
 > {
   //initial placeholder examples
-  public state: SelectExampleState = {
-    film: Songs.TOP_100_FILMS[0],
-    films: Songs.TOP_100_FILMS,
-    minimal: true
+  public state: ISuggestExample = {
+    song: Songs.TOP_100_SONGS[0],
+    songs: Songs.TOP_100_SONGS
   };
 
   public render() {
-    const buttonText = this.state.film.title;
-
     return (
       <div>
-        <Example header="What's That Song?" icon="music">
-          <div style={filmSelectStyles}>
-            <FilmSelect
-              items={this.state.films}
-              itemRenderer={Songs.renderFilm}
+        <CardExample header="What's That Song?" icon="music">
+          <div style={songSuggestStyles}>
+            <SongSuggest
+              items={this.state.songs}
+              itemRenderer={Songs.renderSong}
               onItemSelect={this.handleItemSelect}
               inputValueRenderer={this.handleValueRender}
               onQueryChange={this.debounceHandleQueryChange}
-              resetOnClose={true}
+              //resetOnClose={true}
               fill={false}
               popoverProps={{ minimal: true }}
-            >
-              <Button text={buttonText} icon={IconNames.SEARCH} />
-            </FilmSelect>
+            ></SongSuggest>
           </div>
-          <Spinner intent={Intent.PRIMARY} size={25} value={0.1} />
-          <Card
-            style={{ height: "8em", marginTop: "5%" }}
-            className={Classes.SKELETON}
-          ></Card>
-        </Example>
+          <Player song={this.state.song}></Player>
+        </CardExample>
       </div>
     );
   }
 
-  private handleItemSelect = (film: Songs.ISong) => {
+  private handleItemSelect = (song: Songs.ISong) => {
     //TODO: update state
-    this.setState({ film: film });
+    this.setState({ song: song });
   };
   private handleValueRender = (item: Songs.ISong) => {
     return JSON.stringify(item.title);
   };
 
   //async Spotify API caller
-  private handleQueryChange = async (film: Songs.ISong) => {
+  private handleQueryChange = async (song: Songs.ISong) => {
     let accessToken = null;
     let results: Songs.ISong[] = [];
 
@@ -100,17 +83,18 @@ export class SelectExample extends React.PureComponent<
       .then((data) => {
         accessToken = data["access_token"];
         spotify.setAccessToken(accessToken);
-        spotify.searchTracks(film).then(
+        spotify.searchTracks(song).then(
           (data) => {
-            console.log("Searching for ", film, data);
+            //console.log("Searching for ", song, data);
             let tracks = data.tracks.items;
             tracks.forEach((track) => {
+              //console.log("track.image: ", track.album.images[0]);
               let result: Songs.ISong = {
                 title: track.name,
                 artist: track.album.artists[0].name
               };
               results.push(result);
-              this.setState({ films: results });
+              this.setState({ songs: results });
             });
           },
           (err) => {
@@ -126,6 +110,6 @@ export class SelectExample extends React.PureComponent<
   //debounce API requests
   private debounceHandleQueryChange = debounce(
     this.handleQueryChange,
-    1000
+    750
   );
 }
